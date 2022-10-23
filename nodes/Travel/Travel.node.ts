@@ -6,15 +6,16 @@ import {
 	NodeOperationError,
 } from 'n8n-workflow';
 
-export class ExampleNode implements INodeType {
+export class Travel implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Example Node',
-		name: 'exampleNode',
+		displayName: 'Travel to Brazil',
+		name: 'travelNode',
+		icon: 'file:travel-node.svg',
 		group: ['transform'],
 		version: 1,
-		description: 'Basic Example Node',
+		description: 'Basic Example Node Travel',
 		defaults: {
-			name: 'Example Node',
+			name: 'Travel',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -22,12 +23,12 @@ export class ExampleNode implements INodeType {
 			// Node properties which the user gets displayed and
 			// can change on the node.
 			{
-				displayName: 'My String',
-				name: 'myString',
+				displayName: 'Travel to City',
+				name: 'city',
 				type: 'string',
 				default: '',
-				placeholder: 'Placeholder value',
-				description: 'The description text',
+				placeholder: 'São Paulo',
+				description: 'Input the name city',
 			},
 		],
 	};
@@ -40,17 +41,19 @@ export class ExampleNode implements INodeType {
 		const items = this.getInputData();
 
 		let item: INodeExecutionData;
-		let myString: string;
+		let city: string;
+		let country: string = 'Brasil';
 
 		// Iterates over all input items and add the key "myString" with the
 		// value the parameter "myString" resolves to.
 		// (This could be a different value for each item in case it contains an expression)
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
 			try {
-				myString = this.getNodeParameter('myString', itemIndex, '') as string;
+				city = this.getNodeParameter('city', itemIndex, '') as string;
 				item = items[itemIndex];
 
-				item.json['myString'] = myString;
+				item.json['city'] = city;
+				item.json['country'] = country;
 			} catch (error) {
 				// This node should never fail but we want to showcase how
 				// to handle errors.
